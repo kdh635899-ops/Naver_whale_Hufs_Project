@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "WAVOO — HUFS 캠퍼스",
+  "version": "0.1.0",
+  "description": "한국외대 학생을 위한 웨일 사이드바 확장앱 (OQMA, 공지 알림, 학교 링크, 학과 뉴스, BOO)",
+
+  "permissions": ["storage", "alarms", "notifications", "contextMenus"],
+
+  "host_permissions": [
+    "https://ssai.hufs.ac.kr/*",
+    "https://hufsability.hufs.ac.kr/*",
+    "https://wis.hufs.ac.kr/*"
+  ],
+
+  "background": {
+    "service_worker": "src/extension/background/index.ts",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://wis.hufs.ac.kr/*"],
+      "js": ["src/extension/content/timetable.ts"]
+    }
+  ],
+
+  "sidebar_action": {
+    "default_page": "index.html",
+    "default_icon": "public/icons/icon16.png",
+    "use_navigation_bar": false
+  },
+
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "public/icons/icon16.png"
+  },
+
+  "icons": {
+    "16": "public/icons/icon16.png",
+    "48": "public/icons/icon48.png",
+    "128": "public/icons/icon128.png"
+  }
+}
