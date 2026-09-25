@@ -1,0 +1,22 @@
+[
+  {
+    "id": "ssai",
+    "name": "Social Science & AI융합학부",
+    "college": "AI융합대학",
+    "homepage": "https://ssai.hufs.ac.kr/ssai/index.do",
+    "boards": [
+      {
+        "name": "학사공지사항",
+        "url": "https://ssai.hufs.ac.kr/ssai/10871/subview.do"
+      },
+      {
+        "name": "장학공지",
+        "url": "https://ssai.hufs.ac.kr/ssai/13462/subview.do"
+      },
+      {
+        "name": "교육 및 홍보",
+        "url": "https://ssai.hufs.ac.kr/ssai/10872/subview.do"
+      }
+    ]
+  }
+]
