@@ -55,6 +55,16 @@ async function handleRequest(request: BackgroundRequest): Promise<BackgroundResp
     case "notice:reset":
       await clearNotices();
       return { ok: true };
+    case "timetable:reset":
+      await clearTimetable();
+      await clearSentReminders();
+      return { ok: true };
+    case "timetable:seed-demo":
+      await saveTimetable(makeDemoTimetable(Date.now()));
+      await clearSentReminders();
+      return { ok: true };
+    case "timetable:check-reminders":
+      return { ok: true, count: (await checkClassReminders(Date.now(), request.remindBeforeMinutes)).length };
   }
 }
 

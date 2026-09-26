@@ -2,9 +2,12 @@
 export type BackgroundRequest =
   | { type: "ping" }
   | { type: "notice:check-now" }
-  | { type: "notice:reset" };
+  | { type: "notice:reset" }
+  | { type: "timetable:reset" }
+  | { type: "timetable:seed-demo" }
+  | { type: "timetable:check-reminders"; remindBeforeMinutes?: number };
 
-export type BackgroundResponse = { ok: true; added?: number } | { ok: false; error: string };
+export type BackgroundResponse = { ok: true; added?: number; count?: number } | { ok: false; error: string };
 
 // background가 시작되지 않았거나 응답하지 않으면 reject되거나 undefined가 돌아온다.
 export function sendToBackground(request: BackgroundRequest): Promise<BackgroundResponse | undefined> {

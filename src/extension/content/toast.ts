@@ -11,7 +11,7 @@ export function toastWindow(self: Window = window): Window {
   return self;
 }
 
-export function showToast(message: string, durationMs = 4000, host: Window = toastWindow()) {
+export function showToast(message: string, durationMs = 8000, host: Window = toastWindow()) {
   const doc = host.document;
   if (!doc.body) return;
 
@@ -28,8 +28,10 @@ export function showToast(message: string, durationMs = 4000, host: Window = toa
     color: "#fff",
     borderRadius: "8px",
     font: "14px/1.4 'Malgun Gothic', sans-serif",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.25)"
+    boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+    cursor: "pointer"
   });
+  toast.addEventListener("click", () => toast.remove()); // 누르면 바로 닫힌다
   doc.body.appendChild(toast);
   // 이 프레임이 도중에 이동해도 사라지도록, 안내창이 붙은 페이지의 타이머를 쓴다.
   host.setTimeout(() => toast.remove(), durationMs);

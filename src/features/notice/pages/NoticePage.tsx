@@ -49,7 +49,7 @@ export function NoticePage() {
     setMessage("");
     try {
       const response = await sendToBackground(request);
-      setMessage(response?.ok ? describe(response.added) : `실패: ${response ? response.error : "응답 없음"}`);
+      setMessage(response?.ok ? describe(response.count ?? response.added) : `실패: ${response ? response.error : "응답 없음"}`);
     } catch (error) {
       setMessage(`background가 응답하지 않아요: ${String(error)}`);
     } finally {
@@ -98,6 +98,24 @@ export function NoticePage() {
         </button>
         <button type="button" disabled={busy} onClick={() => void run({ type: "notice:reset" }, () => "알림함을 비웠어요")}>
           기록 초기화 (개발용)
+        </button>
+      </div>
+      <div className="actions demo-tools">
+        <span className="demo-label">시연 도구</span>
+        <button type="button" disabled={busy} onClick={() => void run({ type: "timetable:seed-demo" }, () => "샘플 시간표를 넣었어요. BOO 말풍선을 확인해보세요")}>
+          샘플 시간표 넣기
+        </button>
+        <button
+          type="button"
+          disabled={busy}
+          onClick={() =>
+            void run({ type: "timetable:check-reminders", remindBeforeMinutes: 180 }, (n) => (n ? `수업 알림 ${n}건을 보냈어요` : "곧 시작하는 수업이 없거나 이미 알렸어요"))
+          }
+        >
+          수업 알림 지금 확인
+        </button>
+        <button type="button" disabled={busy} onClick={() => void run({ type: "timetable:reset" }, () => "시간표를 지웠어요. 종합정보시스템 개인시간표를 새로고침하면 다시 저장돼요")}>
+          시간표 지우기
         </button>
       </div>
       {message && <p className="message">{message}</p>}

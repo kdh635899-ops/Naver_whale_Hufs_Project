@@ -18,7 +18,8 @@
 .chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px 2px 10px; border-radius: 12px; background: #dff0f3; }
 .chip button { border: none; background: none; color: #557; padding: 0 4px; }
 
-.actions { display: flex; gap: 6px; margin-top: 12px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 12px; }
+.demo-label { color: #778; font-size: 12px; }
 .message { margin: 8px 0 0; color: #0f6e7d; }
 .hint { color: #778; font-size: 12px; margin: 6px 0 0; }
 
