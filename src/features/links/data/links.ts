@@ -2,6 +2,8 @@ export interface SchoolLink {
   id: string;
   name: string;
   url: string;
+  /** 학교가 운영하는 사이트가 아닌 경우 화면에 "비공식"으로 표시한다 */
+  unofficial?: boolean;
 }
 
 export interface LinkGroup {
@@ -10,14 +12,18 @@ export interface LinkGroup {
 }
 
 // 임시 목록이다. 최종 사이트 목록이 정해지면 이 파일만 고치면 된다. (접속되는 주소만 넣는다)
+// 이름은 학교 사이트의 표기를 따른다 (예: e-class(LMS), 수강편람(서울)).
 export const LINK_GROUPS: LinkGroup[] = [
   {
     title: "학사",
     links: [
       { id: "wis", name: "종합정보시스템", url: "https://wis.hufs.ac.kr/src08/jsp/index.jsp" },
+      { id: "eclass", name: "e-class(LMS)", url: "https://eclass.hufs.ac.kr/ilos/main/main_form.acl" },
       { id: "timetable", name: "강의시간표 조회", url: "https://wis.hufs.ac.kr/src08/jsp/lecture/LECTURE2020L.jsp" },
-      { id: "eclass", name: "e-Class", url: "https://eclass.hufs.ac.kr/ilos/main/main_form.acl" },
-      { id: "calendar", name: "학사일정", url: "https://www.hufs.ac.kr/hufs/11360/subview.do" }
+      { id: "catalog-seoul", name: "수강편람(서울)", url: "https://wis.hufs.ac.kr/jsp/HUFS/seb/listCourseCatalog.jsp?campusGb=H1" },
+      { id: "catalog-global", name: "수강편람(글로벌)", url: "https://wis.hufs.ac.kr/jsp/HUFS/seb/listCourseCatalog.jsp?campusGb=H2" },
+      { id: "calendar", name: "학사일정", url: "https://www.hufs.ac.kr/hufs/11360/subview.do" },
+      { id: "tuition-cert", name: "교육비납입증명서", url: "https://wis.hufs.ac.kr/src08/jsp/regist/REGISTSHEET_Main.jsp" }
     ]
   },
   {
@@ -30,12 +36,19 @@ export const LINK_GROUPS: LinkGroup[] = [
     ]
   },
   {
+    title: "학생 서비스",
+    links: [
+      { id: "everytime", name: "에브리타임", url: "https://everytime.kr/", unofficial: true },
+      { id: "hanmo", name: "한모(모의수강신청)", url: "https://vsugangpractice.com/", unofficial: true }
+    ]
+  },
+  {
     title: "생활",
     links: [
       { id: "mail", name: "HUFS 메일", url: "https://mail.hufs.ac.kr/" },
       { id: "office365", name: "Office365", url: "https://office.hufs.ac.kr/ASP2/Default.aspx" },
-      { id: "library-seoul", name: "도서관 (서울)", url: "https://lib.hufs.ac.kr/" },
-      { id: "library-global", name: "도서관 (글로벌)", url: "https://lib.hufs.ac.kr/global/" },
+      { id: "library-seoul", name: "도서관(서울)", url: "https://lib.hufs.ac.kr/" },
+      { id: "library-global", name: "도서관(글로벌)", url: "https://lib.hufs.ac.kr/global/" },
       { id: "cafeteria", name: "식당 안내", url: "https://www.hufs.ac.kr/hufs/11318/subview.do" },
       { id: "coop", name: "생활협동조합", url: "https://coop.hufs.ac.kr/" },
       { id: "dorm", name: "기숙사", url: "https://www.hufs.ac.kr/hufs/11313/subview.do" },
