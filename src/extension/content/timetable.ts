@@ -4,6 +4,7 @@
 import { parseTimetable } from "../../services/timetable/parseTimetableTable";
 import { getTimetable, saveCaptureStatus, saveTimetable } from "../../storage/timetable";
 import { showToast } from "./toast";
+import { watchPage } from "./watchPage";
 
 const DEBOUNCE_MS = 500;
 
@@ -38,15 +39,5 @@ async function capture() {
   showToast(`BOO가 시간표를 저장했어요 (${result.entries.length}개 수업)`);
 }
 
-let timer: ReturnType<typeof setTimeout> | undefined;
-
 // 표가 나중에 그려지거나(비동기) 학기를 바꿔 다시 그려질 수 있어서, 화면이 바뀔 때마다 조금 기다렸다가 다시 확인한다.
-function schedule() {
-  clearTimeout(timer);
-  timer = setTimeout(() => {
-    capture().catch((error) => console.warn("[WAVOO] 시간표 읽기 실패", error));
-  }, DEBOUNCE_MS);
-}
-
-new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
-schedule();
+watchPage(capture, DEBOUNCE_MS, "시간표 읽기 실패");

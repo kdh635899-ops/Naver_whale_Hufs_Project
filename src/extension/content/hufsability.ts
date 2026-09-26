@@ -5,6 +5,7 @@ import { learnLinks } from "../../services/notice/learnHufsabilityLinks";
 import { getLearnedLinks, getNotices, saveLearnedLinks, saveLinkStatus } from "../../storage/notices";
 import { HAB_LINK_STATUS_KEY } from "../../storage/notices";
 import type { LinkLearningStatus } from "../../types/notice";
+import { watchPage } from "./watchPage";
 
 const DEBOUNCE_MS = 600;
 
@@ -36,15 +37,5 @@ async function learn() {
   if (JSON.stringify(storedStatus) !== JSON.stringify(status)) await saveLinkStatus({ at: Date.now(), ...status });
 }
 
-let timer: ReturnType<typeof setTimeout> | undefined;
-
 // 공고 목록이 나중에 그려질 수 있어서, 화면이 바뀔 때마다 조금 기다렸다가 다시 확인한다.
-function schedule() {
-  clearTimeout(timer);
-  timer = setTimeout(() => {
-    learn().catch((error) => console.warn("[WAVOO] 훕스어빌리티 링크 학습 실패", error));
-  }, DEBOUNCE_MS);
-}
-
-new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
-schedule();
+watchPage(learn, DEBOUNCE_MS, "훕스어빌리티 링크 학습 실패");
