@@ -33,6 +33,9 @@ export interface LinkLearningStatus {
   matched: number;
   linked: number;
   scriptOnly: number;
+  generic: number;
+  example?: string;
+  genericUrl?: string;
   sample?: string;
 }
 

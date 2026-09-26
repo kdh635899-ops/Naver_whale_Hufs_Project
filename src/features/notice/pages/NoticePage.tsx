@@ -144,7 +144,13 @@ export function NoticePage() {
         <dt>훕스 링크</dt>
         <dd>
           {linkStatus
-            ? `공고 ${linkStatus.linked}개 연결${linkStatus.scriptOnly ? ` · 주소 없는 항목 ${linkStatus.scriptOnly}개 (${linkStatus.sample ?? ""})` : ""}`
+            ? [
+                `공고 ${linkStatus.linked}개 연결${linkStatus.example ? ` (예: ${linkStatus.example})` : ""}`,
+                linkStatus.generic ? `같은 주소로만 연결돼 제외 ${linkStatus.generic}개 (${linkStatus.genericUrl ?? ""})` : "",
+                linkStatus.scriptOnly ? `주소 없는 항목 ${linkStatus.scriptOnly}개 (${linkStatus.sample ?? ""})` : ""
+              ]
+                .filter(Boolean)
+                .join(" · ")
             : "로그인한 훕스어빌리티 화면을 한 번 열면 공고 링크를 기억해요"}
         </dd>
       </dl>
