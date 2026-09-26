@@ -1,11 +1,6 @@
-import type { BoardPost, StoredNotice } from "../../../types/notice";
+import type { FetchedBoard, StoredNotice } from "../../../types/notice";
 
 // "새 글 판정"을 하는 순수 함수. 저장소·브라우저 API에 의존하지 않아서 단독으로 시험할 수 있다.
-
-export interface FetchedBoard {
-  source: string;
-  posts: BoardPost[];
-}
 
 export interface MergeInput {
   stored: StoredNotice[];

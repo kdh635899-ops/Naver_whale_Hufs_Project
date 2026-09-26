@@ -1,12 +1,31 @@
 import departments from "../../../constants/departments.json";
 import { fetchBoard } from "../../../services/notice/fetchBoard";
+import { fetchHufsability } from "../../../services/notice/fetchHufsability";
 import { getKeywords } from "../../../storage/keywords";
 import { getNotices, saveCheckStatus, saveNotices } from "../../../storage/notices";
-import type { StoredNotice } from "../../../types/notice";
-import { mergeNewPosts, type FetchedBoard } from "./mergeNewPosts";
+import type { FetchedBoard, StoredNotice } from "../../../types/notice";
+import { mergeNewPosts } from "./mergeNewPosts";
 
 // 학과 선택 설정이 생기기 전까지는 SSAI로 고정한다.
 const DEFAULT_DEPARTMENT_ID = "ssai";
+
+interface NoticeSource {
+  /** 실패했을 때 화면에 표시할 이름 */
+  name: string;
+  load: () => Promise<FetchedBoard[]>;
+}
+
+function buildSources(): NoticeSource[] {
+  const department = departments.find((d) => d.id === DEFAULT_DEPARTMENT_ID);
+  const departmentSources = (department?.boards ?? []).map(
+    (board): NoticeSource => ({
+      name: board.name,
+      load: async () => [{ source: board.name, posts: await fetchBoard(board.url) }]
+    })
+  );
+  // 훕스어빌리티는 학과와 무관한 학교 공통 소스라서 어느 학과든 항상 포함한다.
+  return [...departmentSources, { name: "훕스어빌리티", load: fetchHufsability }];
+}
 
 function notifyMatches(alerts: StoredNotice[]) {
   const [first] = alerts;
@@ -19,25 +38,18 @@ function notifyMatches(alerts: StoredNotice[]) {
 }
 
 async function runCheck(now: number): Promise<StoredNotice[]> {
-  const department = departments.find((d) => d.id === DEFAULT_DEPARTMENT_ID);
-  if (!department) return [];
+  const sources = buildSources();
 
-  // 게시판 하나가 실패해도 나머지는 계속 처리한다.
-  const results = await Promise.allSettled(
-    department.boards.map(async (board): Promise<FetchedBoard> => ({
-      source: board.name,
-      posts: await fetchBoard(board.url)
-    }))
-  );
+  // 소스 하나가 실패해도 나머지는 계속 처리한다.
+  const results = await Promise.allSettled(sources.map((source) => source.load()));
   const fetched: FetchedBoard[] = [];
   const failedBoards: string[] = [];
   results.forEach((result, i) => {
-    const name = department.boards[i].name;
     if (result.status === "fulfilled") {
-      fetched.push(result.value);
+      fetched.push(...result.value);
     } else {
-      failedBoards.push(name);
-      console.warn(`[notice] ${name} 확인 실패`, result.reason);
+      failedBoards.push(sources[i].name);
+      console.warn(`[notice] ${sources[i].name} 확인 실패`, result.reason);
     }
   });
   if (fetched.length === 0) {

@@ -124,6 +124,7 @@ export function NoticePage() {
             </a>
             <span className="meta">
               {n.source} · {n.date}
+              {n.deadline && ` · 마감 ${n.deadline.slice(5, 10)}`}
               {n.matchedKeywords.map((k) => (
                 <mark key={k}>{k}</mark>
               ))}

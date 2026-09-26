@@ -1,4 +1,5 @@
 import type { BoardPost } from "../../types/notice";
+import { cleanText } from "../../utils/html";
 
 // 외대 학과 홈페이지 게시판(artclList) 공통 구조를 읽는다.
 // background(service worker)에는 DOMParser가 없어서 정규식으로 파싱한다.
@@ -9,29 +10,8 @@ const LINK_RE =
   /<a\s[^>]*href="(\/bbs\/([\w-]+)\/(\d+)\/(\d+)\/artclView\.do)"[^>]*>([\s\S]*?)<\/a>/;
 const DATE_RE = /class="td-date">\s*(\d{4})\.(\d{2})\.(\d{2})\s*</;
 
-const NAMED_ENTITIES: Record<string, string> = {
-  amp: "&",
-  lt: "<",
-  gt: ">",
-  quot: '"',
-  apos: "'",
-  nbsp: " "
-};
-
-function decodeEntities(text: string): string {
-  return text.replace(/&(#x[0-9a-f]+|#\d+|\w+);/gi, (whole, body: string) => {
-    if (body[0] === "#") {
-      const code = body[1].toLowerCase() === "x" ? parseInt(body.slice(2), 16) : parseInt(body.slice(1), 10);
-      return Number.isFinite(code) ? String.fromCodePoint(code) : whole;
-    }
-    return NAMED_ENTITIES[body.toLowerCase()] ?? whole;
-  });
-}
-
 function cleanTitle(innerHtml: string): string {
-  const withoutBadges = innerHtml.replace(/<span\b[^>]*>[\s\S]*?<\/span>/gi, ""); // "새글" 배지 등
-  const text = withoutBadges.replace(/<[^>]+>/g, "");
-  return decodeEntities(text).replace(/\s+/g, " ").trim();
+  return cleanText(innerHtml.replace(/<span\b[^>]*>[\s\S]*?<\/span>/gi, "")); // "새글" 배지 등
 }
 
 export function parseBoard(html: string, origin: string): BoardPost[] {
