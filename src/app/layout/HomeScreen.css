@@ -1,0 +1,41 @@
+.home-screen {
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+}
+.wavoo-header {
+  display: flex;
+  justify-content: center;
+  padding: 14px 0 10px;
+  border-bottom: 1px solid #dcdcdc;
+}
+.wavoo-header img { cursor: default; user-select: none; }
+
+.home-body { display: flex; flex-direction: column; gap: 14px; padding: 14px 12px; }
+
+/* 다른 개발자가 채울 빈 칸 */
+.slot {
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #e2e2e2;
+  color: #8a8a8a;
+  font-size: 13px;
+}
+.calendar-slot { padding: 10px; border-radius: 4px; }
+.calendar-slot .slot-inner { width: 100%; padding: 12px 0; border-radius: 10px; background: #f4f2f2; text-align: center; color: #333; }
+.news-slot { min-height: 120px; }
+
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tile-slot, .tile-links { aspect-ratio: 1 / 1; border-radius: 4px; }
+.tile-links {
+  border: none;
+  background: #0f6e7d;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.3;
+  cursor: pointer;
+  padding: 6px;
+}
+.tile-links:hover { background: #0c5966; }
+.tile-links:focus-visible { outline: 3px solid #0f6e7d; outline-offset: 2px; }

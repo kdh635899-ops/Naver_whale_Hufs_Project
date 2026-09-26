@@ -1,3 +1,4 @@
+import { DEFAULT_DEPARTMENT_ID } from "../../../constants/department";
 import departments from "../../../constants/departments.json";
 import { fetchBoard } from "../../../services/notice/fetchBoard";
 import { fetchHufsability } from "../../../services/notice/fetchHufsability";
@@ -5,9 +6,6 @@ import { getKeywords } from "../../../storage/keywords";
 import { getNotices, saveCheckStatus, saveNotices } from "../../../storage/notices";
 import type { FetchedBoard, StoredNotice } from "../../../types/notice";
 import { mergeNewPosts } from "./mergeNewPosts";
-
-// 학과 선택 설정이 생기기 전까지는 SSAI로 고정한다.
-const DEFAULT_DEPARTMENT_ID = "ssai";
 
 interface NoticeSource {
   /** 실패했을 때 화면에 표시할 이름 */
