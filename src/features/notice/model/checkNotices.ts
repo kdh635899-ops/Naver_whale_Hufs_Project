@@ -1,7 +1,7 @@
 import departments from "../../../constants/departments.json";
 import { fetchBoard } from "../../../services/notice/fetchBoard";
 import { getKeywords } from "../../../storage/keywords";
-import { getNotices, saveNotices } from "../../../storage/notices";
+import { getNotices, saveCheckStatus, saveNotices } from "../../../storage/notices";
 import type { StoredNotice } from "../../../types/notice";
 import { mergeNewPosts, type FetchedBoard } from "./mergeNewPosts";
 
@@ -30,15 +30,25 @@ async function runCheck(now: number): Promise<StoredNotice[]> {
     }))
   );
   const fetched: FetchedBoard[] = [];
+  const failedBoards: string[] = [];
   results.forEach((result, i) => {
-    if (result.status === "fulfilled") fetched.push(result.value);
-    else console.warn(`[notice] ${department.boards[i].name} 확인 실패`, result.reason);
+    const name = department.boards[i].name;
+    if (result.status === "fulfilled") {
+      fetched.push(result.value);
+    } else {
+      failedBoards.push(name);
+      console.warn(`[notice] ${name} 확인 실패`, result.reason);
+    }
   });
-  if (fetched.length === 0) return [];
+  if (fetched.length === 0) {
+    await saveCheckStatus({ at: now, added: 0, failedBoards });
+    return [];
+  }
 
   const [stored, keywords] = await Promise.all([getNotices(), getKeywords()]);
   const { merged, added } = mergeNewPosts({ stored, fetched, keywords, now });
   await saveNotices(merged);
+  await saveCheckStatus({ at: now, added: added.length, failedBoards });
 
   // 키워드가 일치한 안 읽은 글이 있으면 알림은 한 번만 띄운다.
   const alerts = added.filter((n) => !n.read && n.matchedKeywords.length > 0);

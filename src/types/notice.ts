@@ -18,3 +18,11 @@ export interface StoredNotice extends BoardPost {
   /** 발견 당시 등록돼 있던 키워드 중 제목에 포함된 것 */
   matchedKeywords: string[];
 }
+
+/** 가장 최근 공지 확인의 결과 (알람이든 수동이든) */
+export interface NoticeCheckStatus {
+  at: number;
+  added: number;
+  /** 가져오지 못한 게시판 이름 */
+  failedBoards: string[];
+}
