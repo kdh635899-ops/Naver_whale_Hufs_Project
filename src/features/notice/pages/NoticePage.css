@@ -7,6 +7,7 @@
 .notice-page h2 { margin: 0 0 10px; font-size: 16px; }
 .notice-page h3 { margin: 16px 0 6px; font-size: 14px; }
 .notice-page h3 small { font-weight: normal; color: #667; margin-left: 6px; }
+.notice-page h3 .read-all { float: right; font-size: 12px; }
 .notice-page ul { list-style: none; margin: 0; padding: 0; }
 .notice-page button { cursor: pointer; }
 .notice-page button:disabled { cursor: default; opacity: 0.6; }

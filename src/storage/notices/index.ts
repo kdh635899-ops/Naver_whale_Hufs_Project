@@ -13,6 +13,13 @@ export function saveNotices(notices: StoredNotice[]): Promise<void> {
   return chrome.storage.local.set({ [NOTICES_KEY]: notices });
 }
 
+/** ids를 주면 그 글만, 안 주면 전부 읽음 처리한다. */
+export async function markNoticesRead(ids?: string[]): Promise<void> {
+  const target = ids ? new Set(ids) : null;
+  const notices = await getNotices();
+  await saveNotices(notices.map((n) => (!n.read && (!target || target.has(n.id)) ? { ...n, read: true } : n)));
+}
+
 export function saveCheckStatus(status: NoticeCheckStatus): Promise<void> {
   return chrome.storage.local.set({ [STATUS_KEY]: status });
 }

@@ -1,0 +1,132 @@
+.boo-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 40px 16px 24px;
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+}
+
+.boo-bubble {
+  position: relative;
+  max-width: 260px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #fff;
+  border: 2px solid #0f6e7d;
+  color: #12323a;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+.boo-bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-right: 2px solid #0f6e7d;
+  border-bottom: 2px solid #0f6e7d;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.boo-button {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.boo-button:focus-visible {
+  outline: 3px solid #0f6e7d;
+  outline-offset: 4px;
+}
+
+.boo-character.idle {
+  animation: boo-bob 2.6s ease-in-out infinite;
+}
+.boo-character.alert {
+  animation: boo-jump 1.1s ease-in-out infinite;
+}
+
+.boo-badge {
+  position: absolute;
+  top: 2px;
+  right: -4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  box-sizing: border-box;
+  border-radius: 11px;
+  background: #e0464e;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 22px;
+  text-align: center;
+}
+
+.boo-hint {
+  margin: 0;
+  color: #778;
+  font-size: 12px;
+}
+
+@keyframes boo-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes boo-jump {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-14px); }
+  50% { transform: translateY(0); }
+  65% { transform: translateY(-6px); }
+}
+
+/* 알림함 창 */
+.notice-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  animation: panel-in 0.22s ease-out;
+}
+.notice-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e3e8ea;
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  font-size: 14px;
+}
+.notice-panel-header button {
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.notice-panel-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+@keyframes panel-in {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boo-character.idle,
+  .boo-character.alert,
+  .notice-panel {
+    animation: none;
+  }
+}

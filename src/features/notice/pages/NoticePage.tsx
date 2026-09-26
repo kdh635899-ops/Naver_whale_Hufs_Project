@@ -4,7 +4,7 @@ import { NOTICE_ALARM } from "../../../constants/notice";
 import { sendToBackground, type BackgroundRequest } from "../../../extension/messaging";
 import { useStorageValue } from "../../../hooks/useStorageValue";
 import { KEYWORDS_KEY, setKeywords } from "../../../storage/keywords";
-import { NOTICES_KEY, STATUS_KEY } from "../../../storage/notices";
+import { markNoticesRead, NOTICES_KEY, STATUS_KEY } from "../../../storage/notices";
 import type { NoticeCheckStatus, StoredNotice } from "../../../types/notice";
 
 const NO_KEYWORDS: string[] = [];
@@ -114,12 +114,15 @@ export function NoticePage() {
 
       <h3>
         알림함 <small>안 읽음 {unread} / 전체 {notices.length}</small>
+        <button type="button" className="read-all" disabled={unread === 0} onClick={() => void markNoticesRead()}>
+          모두 읽음
+        </button>
       </h3>
       <ul className="notice-list">
         {notices.length === 0 && <li className="hint">아직 저장된 공지가 없어요.</li>}
         {notices.map((n) => (
           <li key={n.id} className={n.read ? "" : "unread"}>
-            <a href={n.url} target="_blank" rel="noreferrer">
+            <a href={n.url} target="_blank" rel="noreferrer" onClick={() => void markNoticesRead([n.id])}>
               {n.title}
             </a>
             <span className="meta">
