@@ -7,7 +7,7 @@ export interface TimetableEntry {
   periodStart: number;
   periodEnd: number;
   name: string;
-  /** 강의실 (예: 사회과학관 3408). 없으면 빈 문자열 */
+  /** 강의실 (예: 사회과학관3408). 없으면 빈 문자열 */
   room: string;
 }
 
@@ -15,4 +15,13 @@ export interface TimetableEntry {
 export interface SavedTimetable {
   savedAt: number;
   entries: TimetableEntry[];
+  /** 학교 화면에 적힌 학기 (예: 2026-2) */
+  semester?: string;
+}
+
+/** 개인시간표 페이지에서 시간표를 읽으려던 마지막 시도의 결과 */
+export interface CaptureStatus {
+  at: number;
+  kind: "saved" | "unchanged" | "empty" | "no-table";
+  message: string;
 }

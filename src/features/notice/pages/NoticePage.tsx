@@ -5,7 +5,9 @@ import { sendToBackground, type BackgroundRequest } from "../../../extension/mes
 import { useStorageValue } from "../../../hooks/useStorageValue";
 import { KEYWORDS_KEY, setKeywords } from "../../../storage/keywords";
 import { markNoticesRead, NOTICES_KEY, STATUS_KEY } from "../../../storage/notices";
+import { CAPTURE_STATUS_KEY, TIMETABLE_KEY } from "../../../storage/timetable";
 import type { NoticeCheckStatus, StoredNotice } from "../../../types/notice";
+import type { CaptureStatus, SavedTimetable } from "../../../types/timetable";
 
 const NO_KEYWORDS: string[] = [];
 const NO_NOTICES: StoredNotice[] = [];
@@ -18,6 +20,8 @@ export function NoticePage() {
   const keywords = useStorageValue<string[]>(KEYWORDS_KEY, NO_KEYWORDS);
   const notices = useStorageValue<StoredNotice[]>(NOTICES_KEY, NO_NOTICES);
   const status = useStorageValue<NoticeCheckStatus | null>(STATUS_KEY, null);
+  const timetable = useStorageValue<SavedTimetable | null>(TIMETABLE_KEY, null);
+  const capture = useStorageValue<CaptureStatus | null>(CAPTURE_STATUS_KEY, null);
 
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
@@ -108,6 +112,13 @@ export function NoticePage() {
           {status
             ? `${formatTime(status.at)} · 새 글 ${status.added}건${status.failedBoards.length ? ` · 실패: ${status.failedBoards.join(", ")}` : ""}`
             : "아직 없음"}
+        </dd>
+        <dt>시간표</dt>
+        <dd>
+          {timetable
+            ? `${timetable.semester ? `${timetable.semester}학기 · ` : ""}${timetable.entries.length}개 수업 · ${formatTime(timetable.savedAt)} 저장`
+            : "아직 저장 안 됨 (종합정보시스템에서 개인시간표를 열어주세요)"}
+          {capture && (capture.kind === "no-table" || capture.kind === "empty") && ` · ${capture.message}`}
         </dd>
       </dl>
       <p className="hint">알림 팝업이 안 뜨면 윈도우의 알림 설정(집중 지원/방해 금지)을 확인해보세요.</p>

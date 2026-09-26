@@ -65,6 +65,21 @@ export function findNextClass(
   return null;
 }
 
+/** 수업이 하나도 없는 날(공강날)에 BOO가 하는 말. 하루에 하나가 정해지고 날짜가 바뀌면 다른 말을 한다. */
+export const FREE_DAY_MESSAGES = [
+  "여유로운 공강날이에요! 푹 쉬어도 좋아요.",
+  "오늘은 수업이 없는 날이에요. 하고 싶었던 걸 해봐요!",
+  "공강날! 밀린 공부도, 낮잠도 좋아요.",
+  "오늘은 자유예요. 맛있는 거 먹으러 갈까요?",
+  "수업 없는 날이에요. 도서관에서 여유롭게 공부해도 좋겠어요.",
+  "오늘은 쉬는 날! 컨디션 충전하는 하루 보내세요."
+] as const;
+
+export function pickFreeDayMessage(now: number): string {
+  const d = new Date(now);
+  return FREE_DAY_MESSAGES[(d.getFullYear() * 372 + d.getMonth() * 31 + d.getDate()) % FREE_DAY_MESSAGES.length];
+}
+
 export interface TimetableMessages {
   messages: string[];
   /** 곧(30분 이내) 시작하는 수업이 있어 BOO가 먼저 알려야 할 때 */
@@ -97,16 +112,18 @@ export function describeTimetable(entries: TimetableEntry[], now: number, table:
     } else if (dayOffset === 0) {
       messages.push(`오늘 다음 수업은 ${clock}에 시작해요: ${label}`);
     } else {
-      const lead = today.length > 0 ? "오늘 수업은 끝났어요!" : "오늘은 수업이 없어요!";
       const when = dayOffset === 1 ? "내일 첫 수업은" : `다음 수업은 ${dayName}요일`;
-      messages.push(`${lead} ${when} ${clock}에 시작해요: ${label}`);
+      const upcoming = `${when} ${clock}에 시작해요: ${label}`;
+      if (today.length > 0) messages.push(`오늘 수업은 끝났어요! ${upcoming}`);
+      else messages.push(pickFreeDayMessage(now), upcoming);
     }
   } else {
     messages.push("저장된 시간표에서 다음 수업을 찾지 못했어요.");
   }
 
   if (today.length > 0) {
-    messages.push(`${DAY_NAMES[new Date(now).getDay()]}요일 시간표: ${today.map((c) => c.entry.name).join(", ")}`);
+    const day = DAY_NAMES[new Date(now).getDay()];
+    messages.push(`${day}요일 시간표: ${today.map((c) => `${c.entry.name} ${clockOf(c.startAt)}~${clockOf(c.endAt)}`).join(", ")}`);
   }
   return { messages, urgent };
 }

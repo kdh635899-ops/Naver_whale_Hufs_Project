@@ -20,7 +20,8 @@
   "content_scripts": [
     {
       "matches": ["https://wis.hufs.ac.kr/*"],
-      "js": ["src/extension/content/timetable.ts"]
+      "js": ["src/extension/content/timetable.ts"],
+      "all_frames": true
     }
   ],
 
