@@ -3,30 +3,9 @@
 // 이 컴퓨터의 storage에만 저장한다. 로그인이나 계정 정보는 다루지 않고, 서버로 보내는 것도 없다.
 import { parseTimetable } from "../../services/timetable/parseTimetableTable";
 import { getTimetable, saveCaptureStatus, saveTimetable } from "../../storage/timetable";
+import { showToast } from "./toast";
 
 const DEBOUNCE_MS = 500;
-const TOAST_MS = 4000;
-
-function showToast(message: string) {
-  if (!document.body) return;
-  const toast = document.createElement("div");
-  toast.textContent = message;
-  toast.setAttribute("role", "status");
-  Object.assign(toast.style, {
-    position: "fixed",
-    top: "16px",
-    right: "16px",
-    zIndex: "2147483647",
-    padding: "10px 14px",
-    background: "#0f6e7d",
-    color: "#fff",
-    borderRadius: "8px",
-    font: "14px/1.4 'Malgun Gothic', sans-serif",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.25)"
-  });
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), TOAST_MS);
-}
 
 async function capture() {
   const result = parseTimetable(document);
@@ -34,7 +13,7 @@ async function capture() {
 
   if (result.status === "no-table") {
     // 개인시간표 화면인데 표를 못 읽은 경우만 기록한다. 다른 화면·프레임에서는 조용히 넘어간다.
-    if (document.body?.textContent?.includes("개인시간표")) {
+    if (/개인시간표|신청학점수/.test(document.body?.textContent ?? "")) {
       await saveCaptureStatus({ at: now, kind: "no-table", message: `개인시간표 화면이지만 표를 읽지 못했어요 (표 ${result.tableCount}개 발견)` });
     }
     return;
