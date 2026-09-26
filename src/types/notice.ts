@@ -27,6 +27,15 @@ export interface StoredNotice extends BoardPost {
   matchedKeywords: string[];
 }
 
+/** 로그인된 훕스어빌리티 화면에서 공고 링크를 배운 마지막 결과 */
+export interface LinkLearningStatus {
+  at: number;
+  matched: number;
+  linked: number;
+  scriptOnly: number;
+  sample?: string;
+}
+
 /** 가장 최근 공지 확인의 결과 (알람이든 수동이든) */
 export interface NoticeCheckStatus {
   at: number;

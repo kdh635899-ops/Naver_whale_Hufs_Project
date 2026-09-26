@@ -22,6 +22,10 @@
       "matches": ["https://wis.hufs.ac.kr/*"],
       "js": ["src/extension/content/timetable.ts"],
       "all_frames": true
+    },
+    {
+      "matches": ["https://hufsability.hufs.ac.kr/*"],
+      "js": ["src/extension/content/hufsability.ts"]
     }
   ],
 

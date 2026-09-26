@@ -4,13 +4,14 @@ import { NOTICE_ALARM } from "../../../constants/notice";
 import { sendToBackground, type BackgroundRequest } from "../../../extension/messaging";
 import { useStorageValue } from "../../../hooks/useStorageValue";
 import { KEYWORDS_KEY, setKeywords } from "../../../storage/keywords";
-import { markNoticesRead, NOTICES_KEY, STATUS_KEY } from "../../../storage/notices";
+import { HAB_LINK_STATUS_KEY, HAB_LINKS_KEY, markNoticesRead, NOTICES_KEY, STATUS_KEY } from "../../../storage/notices";
 import { CAPTURE_STATUS_KEY, TIMETABLE_KEY } from "../../../storage/timetable";
-import type { NoticeCheckStatus, StoredNotice } from "../../../types/notice";
+import type { LinkLearningStatus, NoticeCheckStatus, StoredNotice } from "../../../types/notice";
 import type { CaptureStatus, SavedTimetable } from "../../../types/timetable";
 
 const NO_KEYWORDS: string[] = [];
 const NO_NOTICES: StoredNotice[] = [];
+const NO_LINKS: Record<string, string> = {};
 
 function formatTime(ms: number): string {
   return new Date(ms).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
@@ -21,6 +22,8 @@ export function NoticePage() {
   const notices = useStorageValue<StoredNotice[]>(NOTICES_KEY, NO_NOTICES);
   const status = useStorageValue<NoticeCheckStatus | null>(STATUS_KEY, null);
   const timetable = useStorageValue<SavedTimetable | null>(TIMETABLE_KEY, null);
+  const learnedLinks = useStorageValue<Record<string, string>>(HAB_LINKS_KEY, NO_LINKS);
+  const linkStatus = useStorageValue<LinkLearningStatus | null>(HAB_LINK_STATUS_KEY, null);
   const capture = useStorageValue<CaptureStatus | null>(CAPTURE_STATUS_KEY, null);
 
   const [draft, setDraft] = useState("");
@@ -138,6 +141,12 @@ export function NoticePage() {
             : "아직 저장 안 됨 (종합정보시스템에서 개인시간표를 열어주세요)"}
           {capture && (capture.kind === "no-table" || capture.kind === "empty") && ` · ${capture.message}`}
         </dd>
+        <dt>훕스 링크</dt>
+        <dd>
+          {linkStatus
+            ? `공고 ${linkStatus.linked}개 연결${linkStatus.scriptOnly ? ` · 주소 없는 항목 ${linkStatus.scriptOnly}개 (${linkStatus.sample ?? ""})` : ""}`
+            : "로그인한 훕스어빌리티 화면을 한 번 열면 공고 링크를 기억해요"}
+        </dd>
       </dl>
       <p className="hint">알림 팝업이 안 뜨면 윈도우의 알림 설정(집중 지원/방해 금지)을 확인해보세요.</p>
 
@@ -151,7 +160,7 @@ export function NoticePage() {
         {notices.length === 0 && <li className="hint">아직 저장된 공지가 없어요.</li>}
         {notices.map((n) => (
           <li key={n.id} className={n.read ? "" : "unread"}>
-            <a href={n.url} target="_blank" rel="noreferrer" onClick={() => void markNoticesRead([n.id])}>
+            <a href={learnedLinks[n.id] ?? n.url} target="_blank" rel="noreferrer" onClick={() => void markNoticesRead([n.id])}>
               {n.title}
             </a>
             <span className="meta">
