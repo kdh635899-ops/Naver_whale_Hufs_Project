@@ -73,7 +73,9 @@ export function learnLinks(doc: Document, notices: LinkableNotice[], baseUrl: st
       links[notice.id] = url;
     } else {
       scriptOnly++;
-      sample ??= normalize(found.element.outerHTML).slice(0, 200);
+      // 이동에 쓰는 정보(data-…)가 링크가 아니라 바깥의 목록 줄에 있을 수 있어서, 그 줄 전체 모양을 보여준다.
+      const row = found.element.closest("li, tr") ?? found.element;
+      sample ??= normalize(row.outerHTML).slice(0, 320);
     }
   }
 
