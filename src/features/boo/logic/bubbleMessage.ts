@@ -11,17 +11,28 @@ export interface BooSummary {
   message: string;
 }
 
+// 키워드에 걸린 공지들을 "어느 카테고리에 뭐가 올라왔는지" 한 문장으로 요약한다.
+// 카테고리(출처 게시판)가 여러 곳이면 그 수만큼, 한 곳이면 키워드를 들어서 말한다.
+function describeKeywordMatches(matched: StoredNotice[]): string {
+  const sources = [...new Set(matched.map((n) => n.source))];
+  if (sources.length > 1) {
+    const [first, ...rest] = sources;
+    return `${first} 외 ${rest.length}곳에 키워드 공지가 올라왔어요! 얼른 확인해보시죠!`;
+  }
+  const [first] = matched;
+  const keywords = [...new Set(matched.flatMap((n) => n.matchedKeywords))];
+  const keywordText = keywords.length > 1 ? `${keywords[0]} 외 ${keywords.length - 1}개` : `'${keywords[0]}'`;
+  return `${first.source}에 ${keywordText} 공지가 올라왔어요! 얼른 확인해보시죠!`;
+}
+
 // 알림함 상태를 보고 BOO가 무슨 말을 할지 정한다. 저장소·화면과 무관한 순수 함수라서 단독으로 시험할 수 있다.
 export function describeNotices(notices: StoredNotice[]): BooSummary {
   const unread = notices.filter((n) => !n.read);
   const matched = unread.filter((n) => n.matchedKeywords.length > 0);
 
   if (matched.length > 0) {
-    return {
-      unread: unread.length,
-      mood: "alert",
-      message: `'${matched[0].matchedKeywords[0]}' 공지가 ${matched.length}건 올라왔어요!`
-    };
+    // 공지가 아무리 많이 쌓여도, 내가 등록한 키워드에 걸린 것만 BOO가 콕 집어 알려준다.
+    return { unread: unread.length, mood: "alert", message: describeKeywordMatches(matched) };
   }
   if (unread.length > 0) {
     return { unread: unread.length, mood: "idle", message: `안 읽은 공지가 ${unread.length}건 있어요.` };
