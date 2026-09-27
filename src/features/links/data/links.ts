@@ -23,8 +23,8 @@ export const LINK_GROUPS: LinkGroup[] = [
       { id: "catalog-seoul", name: "수강편람(서울)", url: "https://wis.hufs.ac.kr/jsp/HUFS/seb/listCourseCatalog.jsp?campusGb=H1" },
       { id: "catalog-global", name: "수강편람(글로벌)", url: "https://wis.hufs.ac.kr/jsp/HUFS/seb/listCourseCatalog.jsp?campusGb=H2" },
       { id: "calendar", name: "학사일정", url: "https://www.hufs.ac.kr/hufs/11360/subview.do" },
-      // 로그인해야 보이는 화면이다. 로그아웃 상태면 종합정보시스템이 로그인 화면으로 안내한다.
-      { id: "grades", name: "성적 취득 현황", url: "https://wis.hufs.ac.kr/src08/jsp/main.jsp" },
+      // 로그인해야 보이는 화면이다. 로그아웃 상태면 종합정보시스템이 로그인 화면으로 안내한다. (메뉴 "성적취득현황"의 주소)
+      { id: "grades", name: "성적 취득 현황", url: "https://wis.hufs.ac.kr/src08/jsp/grade/GRADE1030L_Main.jsp?tab_lang=K" },
       { id: "certificate", name: "재학증명서 발급", url: "https://unc.doculink.co.kr/index/choice.do" }
     ]
   },
