@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "한국외대 학생을 위한 웨일 사이드바 확장앱 (OQMA, 공지 알림, 학교 링크, 학과 뉴스, BOO)",
 
-  "permissions": ["storage", "alarms", "notifications", "contextMenus"],
+  "permissions": ["storage", "alarms", "notifications"],
 
   "host_permissions": [
     "https://ssai.hufs.ac.kr/*",

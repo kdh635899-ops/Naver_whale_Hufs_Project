@@ -2,7 +2,7 @@ import { useRef } from "react";
 import "./HomeScreen.css";
 import logoUrl from "../../assets/logo/wavoo-logo.png";
 import { BooCorner } from "../../features/boo/components/BooCorner";
-import { setDevTools, useDevTools } from "../../hooks/useDevTools";
+import { DEV_BUILD, setDevTools, useDevTools } from "../../hooks/useDevTools";
 
 const SECRET_TAPS = 5;
 const SECRET_WINDOW_MS = 3000;
@@ -47,6 +47,7 @@ export function HomeScreen({ onOpenLinks }: { onOpenLinks: () => void }) {
 
   // 로고를 3초 안에 5번 누르면 개발 도구(상태 박스·시연 도구)를 켜고 끈다. 일반 사용자에게는 보이지 않는다.
   function onLogoClick() {
+    if (!DEV_BUILD) return;
     const now = Date.now();
     taps.current = [...taps.current.filter((t) => now - t < SECRET_WINDOW_MS), now];
     if (taps.current.length >= SECRET_TAPS) {

@@ -74,16 +74,18 @@ chrome.runtime.onMessage.addListener((request: BackgroundRequest, _sender, sendR
 });
 
 // 개발·시연용: 서비스 워커 콘솔에서 wavoo.checkNow() 처럼 직접 실행한다.
-Object.assign(globalThis, {
-  wavoo: {
-    checkNow: checkNotices,
-    resetNotices: clearNotices,
-    setKeywords,
-    /** 지금 시각 기준으로 곧 시작하는 가짜 수업이 생기는 샘플 시간표를 저장한다 */
-    seedTimetable: () => saveTimetable(makeDemoTimetable(Date.now())),
-    clearTimetable,
-    /** 수업 알림을 지금 확인한다. 분을 넘기면 그만큼 미리 알린다 (예: checkReminders(120)) */
-    checkReminders: (remindBeforeMinutes?: number) => checkClassReminders(Date.now(), remindBeforeMinutes),
-    resetReminders: clearSentReminders
-  }
-});
+if (import.meta.env.VITE_WAVOO_DEV === "true") {
+  Object.assign(globalThis, {
+    wavoo: {
+      checkNow: checkNotices,
+      resetNotices: clearNotices,
+      setKeywords,
+      /** 지금 시각 기준으로 곧 시작하는 가짜 수업이 생기는 샘플 시간표를 저장한다 */
+      seedTimetable: () => saveTimetable(makeDemoTimetable(Date.now())),
+      clearTimetable,
+      /** 수업 알림을 지금 확인한다. 분을 넘기면 그만큼 미리 알린다 (예: checkReminders(120)) */
+      checkReminders: (remindBeforeMinutes?: number) => checkClassReminders(Date.now(), remindBeforeMinutes),
+      resetReminders: clearSentReminders
+    }
+  });
+}
