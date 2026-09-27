@@ -1,7 +1,7 @@
-import { DEFAULT_DEPARTMENT_ID } from "../../../constants/department";
 import departments from "../../../constants/departments.json";
 import { fetchBoard } from "../../../services/notice/fetchBoard";
 import { fetchHufsability } from "../../../services/notice/fetchHufsability";
+import { getMyDepartments } from "../../../storage/departments";
 import { getKeywords } from "../../../storage/keywords";
 import { getNotices, saveCheckStatus, saveNotices } from "../../../storage/notices";
 import type { FetchedBoard, StoredNotice } from "../../../types/notice";
@@ -13,9 +13,11 @@ interface NoticeSource {
   load: () => Promise<FetchedBoard[]>;
 }
 
-function buildSources(): NoticeSource[] {
-  const department = departments.find((d) => d.id === DEFAULT_DEPARTMENT_ID);
-  const departmentSources = (department?.boards ?? []).map(
+async function buildSources(): Promise<NoticeSource[]> {
+  // 내 학과(본전공·이중전공·부전공 모두)의 게시판을 가져온다. 게시판 정보가 없는 직접 추가 학과는 건너뛴다.
+  const mine = await getMyDepartments();
+  const boards = mine.flatMap((m) => departments.find((d) => d.id === m.id)?.boards ?? []);
+  const departmentSources = boards.map(
     (board): NoticeSource => ({
       name: board.name,
       load: async () => [{ source: board.name, posts: await fetchBoard(board.url) }]
@@ -36,7 +38,7 @@ function notifyMatches(alerts: StoredNotice[]) {
 }
 
 async function runCheck(now: number): Promise<StoredNotice[]> {
-  const sources = buildSources();
+  const sources = await buildSources();
 
   // 소스 하나가 실패해도 나머지는 계속 처리한다.
   const results = await Promise.allSettled(sources.map((source) => source.load()));
