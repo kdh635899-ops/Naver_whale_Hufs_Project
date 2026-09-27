@@ -11,18 +11,17 @@ export interface BooSummary {
   message: string;
 }
 
-// 키워드에 걸린 공지들을 "어느 카테고리에 뭐가 올라왔는지" 한 문장으로 요약한다.
-// 카테고리(출처 게시판)가 여러 곳이면 그 수만큼, 한 곳이면 키워드를 들어서 말한다.
+/** 말풍선에 넣기엔 긴 제목을 줄인다 */
+const TITLE_LIMIT = 26;
+function shortenTitle(title: string): string {
+  return title.length > TITLE_LIMIT ? `${title.slice(0, TITLE_LIMIT)}…` : title;
+}
+
+// 키워드에 걸린 공지 중 가장 최근 것의 제목을 그대로 불러 말한다. 나머지는 개수로만 덧붙인다.
 function describeKeywordMatches(matched: StoredNotice[]): string {
-  const sources = [...new Set(matched.map((n) => n.source))];
-  if (sources.length > 1) {
-    const [first, ...rest] = sources;
-    return `${first} 외 ${rest.length}곳에 키워드 공지가 올라왔어요! 얼른 확인해보시죠!`;
-  }
-  const [first] = matched;
-  const keywords = [...new Set(matched.flatMap((n) => n.matchedKeywords))];
-  const keywordText = keywords.length > 1 ? `${keywords[0]} 외 ${keywords.length - 1}개` : `'${keywords[0]}'`;
-  return `${first.source}에 ${keywordText} 공지가 올라왔어요! 얼른 확인해보시죠!`;
+  const [latest, ...restList] = [...matched].sort((a, b) => b.fetchedAt - a.fetchedAt);
+  const rest = restList.length > 0 ? ` (외 ${restList.length}건)` : "";
+  return `'${shortenTitle(latest.title)}' 공고가 ${latest.source}에서 올라왔어요${rest}! 얼른 확인해보시죠!`;
 }
 
 // 알림함 상태를 보고 BOO가 무슨 말을 할지 정한다. 저장소·화면과 무관한 순수 함수라서 단독으로 시험할 수 있다.
