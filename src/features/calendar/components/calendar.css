@@ -1,0 +1,220 @@
+.wavoo-calendar-widget {
+  font-size: 12px;
+  color: #222;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fff;
+  overflow-x: hidden;
+}
+
+/* 좁은 웨일 사이드바에서 input/버튼의 기본 content-box 폭이 넘치지 않도록 강제한다. */
+.wavoo-calendar-widget,
+.wavoo-calendar-widget * {
+  box-sizing: border-box;
+}
+
+.wavoo-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.wavoo-calendar-header-title {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.wavoo-calendar-nav-btn,
+.wavoo-calendar-toggle-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 2px 6px;
+  color: #555;
+}
+
+.wavoo-calendar-toggle-btn {
+  font-size: 11px;
+  color: #888;
+}
+
+.wavoo-calendar-week-grid,
+.wavoo-calendar-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.wavoo-calendar-weekday-label {
+  text-align: center;
+  font-size: 10px;
+  color: #999;
+  padding-bottom: 2px;
+}
+
+.wavoo-calendar-day-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px 0;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  color: #333;
+}
+
+.wavoo-calendar-day-cell:hover {
+  background: #f2f2f2;
+}
+
+.wavoo-calendar-day-cell--outside {
+  color: #ccc;
+}
+
+.wavoo-calendar-day-cell--today {
+  font-weight: 700;
+  color: #1a73e8;
+}
+
+.wavoo-calendar-day-cell--selected {
+  background: #1a73e8;
+  color: #fff;
+}
+
+.wavoo-calendar-day-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #1a73e8;
+}
+
+.wavoo-calendar-day-cell--selected .wavoo-calendar-day-dot {
+  background: #fff;
+}
+
+.wavoo-calendar-day-dot--placeholder {
+  visibility: hidden;
+}
+
+.wavoo-calendar-events {
+  margin-top: 8px;
+  border-top: 1px solid #eee;
+  padding-top: 6px;
+}
+
+.wavoo-calendar-events-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.wavoo-calendar-events-date {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.wavoo-calendar-add-btn {
+  border: 1px solid #1a73e8;
+  color: #1a73e8;
+  background: transparent;
+  border-radius: 4px;
+  font-size: 11px;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+.wavoo-calendar-empty {
+  font-size: 11px;
+  color: #999;
+  padding: 6px 0;
+}
+
+.wavoo-calendar-event-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 2px;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 11px;
+}
+
+.wavoo-calendar-event-time {
+  color: #888;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+
+.wavoo-calendar-event-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wavoo-calendar-event-actions button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 11px;
+  color: #888;
+  margin-left: 4px;
+}
+
+.wavoo-calendar-editor {
+  margin-top: 6px;
+  padding: 6px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wavoo-calendar-editor input,
+.wavoo-calendar-editor textarea {
+  width: 100%;
+  font-size: 11px;
+  padding: 4px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  resize: none;
+}
+
+.wavoo-calendar-editor-row {
+  display: flex;
+  gap: 4px;
+}
+
+.wavoo-calendar-editor-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.wavoo-calendar-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.wavoo-calendar-editor-actions button {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.wavoo-calendar-editor-actions button[data-variant="primary"] {
+  background: #1a73e8;
+  border-color: #1a73e8;
+  color: #fff;
+}
