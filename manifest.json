@@ -9,7 +9,8 @@
   "host_permissions": [
     "https://ssai.hufs.ac.kr/*",
     "https://hufsability.hufs.ac.kr/*",
-    "https://wis.hufs.ac.kr/*"
+    "https://wis.hufs.ac.kr/*",
+    "https://news.google.com/*"
   ],
 
   "background": {

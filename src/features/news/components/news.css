@@ -1,0 +1,157 @@
+.wavoo-news-widget {
+  font-size: 12px;
+  color: #222;
+  background: #f1f1f3;
+  border-radius: 16px;
+  padding: 10px 12px;
+  overflow-x: hidden;
+  min-height: 48px;
+}
+
+/* 좁은 웨일 사이드바에서 select/버튼 폭이 넘치지 않도록 강제한다. */
+.wavoo-news-widget,
+.wavoo-news-widget * {
+  box-sizing: border-box;
+}
+
+.wavoo-news-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.wavoo-news-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.wavoo-news-actions button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 2px 6px;
+  font-size: 13px;
+  color: #555;
+}
+
+.wavoo-news-actions button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.wavoo-news-settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 6px 8px;
+  padding: 8px;
+  margin-bottom: 6px;
+  background: #fff;
+  border-radius: 10px;
+}
+
+.wavoo-news-settings .wavoo-news-status {
+  flex-basis: 100%;
+}
+
+.wavoo-news-settings label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 110px;
+  min-width: 0;
+  font-size: 11px;
+  color: #666;
+}
+
+.wavoo-news-settings select {
+  width: 100%;
+  padding: 3px 4px;
+  font-size: 12px;
+}
+
+.wavoo-news-settings-done {
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  background: #222;
+  color: #fff;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* 두 전공 카드를 위아래로 배치하고 사이에 구분선을 둔다. */
+.wavoo-news-card {
+  padding: 6px 0;
+}
+
+.wavoo-news-card + .wavoo-news-card {
+  border-top: 1px solid #dcdce0;
+}
+
+.wavoo-news-card-label {
+  font-weight: 600;
+  font-size: 11px;
+  color: #3a5bd9;
+  margin-bottom: 2px;
+}
+
+.wavoo-news-card-role {
+  margin-left: 6px;
+  font-weight: 400;
+  color: #999;
+}
+
+.wavoo-news-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wavoo-news-headline {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  color: #111;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+.wavoo-news-headline:hover {
+  text-decoration: underline;
+}
+
+.wavoo-news-meta {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wavoo-news-status {
+  margin: 2px 0;
+  font-size: 11px;
+  color: #888;
+}
+
+.wavoo-news-status-error {
+  color: #c0392b;
+}
+
+.wavoo-news-footer {
+  min-height: 14px;
+  font-size: 10px;
+  color: #aaa;
+  text-align: right;
+}
