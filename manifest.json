@@ -31,11 +31,6 @@
     "use_navigation_bar": false
   },
 
-  "action": {
-    "default_popup": "index.html",
-    "default_icon": "public/icons/icon16.png"
-  },
-
   "icons": {
     "16": "public/icons/icon16.png",
     "48": "public/icons/icon48.png",
